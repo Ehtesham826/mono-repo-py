@@ -9,10 +9,12 @@ jobs:
       - run:
           name: Authenticate with Google Cloud
           command: |
-            echo $GCLOUD_SERVICE_KEY | base64 --decode > gcloud-key.json
-            gcloud auth activate-service-account --key-file=gcloud-key.json
-            gcloud config set project codetokloud
-            gcloud auth configure-docker
+            apt-get install -qq -y gettext
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            gcloud --quiet config set project codetokloud
+            gcloud --quiet config set compute/zone us-central1
+            gcloud --quiet container clusters get-credentials codetokloud
       - run:
           name: Build and Push Auth Service
           command: |
@@ -28,22 +30,6 @@ jobs:
           command: |
             docker build -t gcr.io/codetokloud/payment:latest ./services/payment
             docker push gcr.io/codetokloud/payment:latest
-
-  deploy:
-    docker:
-      - image: google/cloud-sdk:latest
-    steps:
-      - checkout
-      - run:
-          name: Authenticate with Google Cloud
-          command: |
-            echo $GCLOUD_SERVICE_KEY | base64 --decode > gcloud-key.json
-            gcloud auth activate-service-account --key-file=gcloud-key.json
-            gcloud config set project codetokloud
-      - run:
-          name: Get GKE Cluster Credentials
-          command: |
-            gcloud container clusters get-credentials codetokloud --zone us-central1
   
 
 workflows:
