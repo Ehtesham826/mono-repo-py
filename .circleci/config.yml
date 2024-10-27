@@ -10,8 +10,8 @@ jobs:
           name: Authenticate with Google Cloud
           command: |
             apt-get install -qq -y gettext
-            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
-            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            echo $GCLOUD_SERVICE_KEY > $gcloud-service-key.json
+            gcloud auth activate-service-account --key-file=gcloud-service-key.json
             gcloud --quiet config set project codetokloud
             gcloud --quiet config set compute/zone us-central1
             gcloud --quiet container clusters get-credentials codetokloud
