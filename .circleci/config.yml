@@ -4,7 +4,7 @@ orbs:
   gcr: circleci/gcp-gcr@0.0.2
 
 jobs:
-  deploy_to_staging:
+  build:
     docker:
       - image: google/cloud-sdk
     steps:
