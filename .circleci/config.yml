@@ -1,36 +1,58 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:python:services/search
 version: 2.1
-orbs:
-  python: circleci/python@2
+
 jobs:
-  test-python:
-    # Install dependencies and run tests
+  build:
     docker:
-      - image: cimg/python:3.8-node
-    working_directory: ~/project/services/search
+      - image: circleci/python:3.9
     steps:
-      - checkout:
-          path: ~/project
-      - python/install-packages
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
       - run:
-          name: Run tests
-          command: pytest --junitxml=junit.xml || ((($? == 5)) && echo 'Did not find any tests to run.')
-      - store_test_results:
-          path: junit.xml
+          name: Authenticate with Google Cloud
+          command: |
+            echo $GCLOUD_SERVICE_KEY | base64 --decode > gcloud-key.json
+            gcloud auth activate-service-account --key-file=gcloud-key.json
+            gcloud config set project codetokloud
+            gcloud auth configure-docker
+      - run:
+          name: Build and Push Auth Service
+          command: |
+            docker build -t gcr.io/codetokloud/auth:latest ./services/auth
+            docker push gcr.io/codetokloud/auth:latest
+      - run:
+          name: Build and Push Search Service
+          command: |
+            docker build -t gcr.io/codetokloud/search:latest ./services/search
+            docker push gcr.io/codetokloud/search:latest
+      - run:
+          name: Build and Push Payment Service
+          command: |
+            docker build -t gcr.io/codetokloud/payment:latest ./services/payment
+            docker push gcr.io/codetokloud/payment:latest
+
   deploy:
-    # This is an example deploy job, not actually used by the workflow
     docker:
-      - image: cimg/base:stable
+      - image: google/cloud-sdk:latest
     steps:
-      # Replace this with steps to deploy to users
+      - checkout
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Authenticate with Google Cloud
+          command: |
+            echo $GCLOUD_SERVICE_KEY | base64 --decode > gcloud-key.json
+            gcloud auth activate-service-account --key-file=gcloud-key.json
+            gcloud config set project codetokloud
+      - run:
+          name: Get GKE Cluster Credentials
+          command: |
+            gcloud container clusters get-credentials codetokloud --zone us-central1
+  
+
 workflows:
-  build-and-test:
+  version: 2
+  build_and_deploy:
     jobs:
-      - test-python
-    # - deploy:
-    #     requires:
-    #       - test-python
+      - build
+      - deploy:
+          requires:
+            - build
