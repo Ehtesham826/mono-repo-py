@@ -24,18 +24,18 @@ jobs:
     - run:
         name: Build and Push Auth Service
         command: |
-            docker build -t us-central1-docker.pkg.dev/codetokloud/auth:latest ./services/auth
-            docker push us-central1-docker.pkg.dev/codetokloud/auth:latest
+            docker build -t us-central1-docker.pkg.dev/codetokloud/auth/auth:latest ./services/auth
+            docker push us-central1-docker.pkg.dev/codetokloud/auth/auth:latest
     - run:
         name: Build and Push Search Service
         command: |
-          docker build -t us-central1-docker.pkg.dev/codetokloud/search:latest ./services/search
-          docker push us-central1-docker.pkg.dev/codetokloud/search:latest
+          docker build -t us-central1-docker.pkg.dev/codetokloud/search/search:latest ./services/search
+          docker push us-central1-docker.pkg.dev/codetokloud/search/search:latest
     - run:
         name: Build and Push Payment Service
         command: |
-          docker build -t us-central1-docker.pkg.dev/codetokloud/payment:latest ./services/payment
-          docker push us-central1-docker.pkg.dev/codetokloud/payment:latest
+          docker build -t us-central1-docker.pkg.dev/codetokloud/payment/payment:latest ./services/payment
+          docker push us-central1-docker.pkg.dev/codetokloud/payment/payment:latest
 
 
 workflows:
