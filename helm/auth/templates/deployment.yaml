@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "<.Chart.Name>.fullname" . }}
+  name: {{ include "auth.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "<.Chart.Name>.name" . }}
+      app: {{ include "auth.name" . }}
   template:
     metadata:
       labels:
-        app: {{ include "<.Chart.Name>.name" . }}
+        app: {{ include "auth.name" . }}
     spec:
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - containerPort: 8000  # Change this to 8001 for search and 8002 for payment
+        - containerPort: 8000
