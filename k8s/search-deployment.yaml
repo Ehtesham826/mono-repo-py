@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: search-container
-        image: gcr.io/<your-project-id>/search:latest
+        image:  us-central1-docker.pkg.dev/codetokloud/search/search:latest
         ports:
         - containerPort: 8001
         env:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: payment-container
-        image: gcr.io/<your-project-id>/payment:latest
+        image: gus-central1-docker.pkg.dev/codetokloud/payment/payment:latest
         ports:
         - containerPort: 8002
         env:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: auth-container
-        image: gcr.io/<your-project-id>/auth:latest
+        image: us-central1-docker.pkg.dev/codetokloud/auth/auth:latest
         ports:
         - containerPort: 8000
         env:
