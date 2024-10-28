@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "<service-name>.fullname" . }}
+  name: {{ include "<.Chart.Name>.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "<service-name>.name" . }}
+      app: {{ include "<.Chart.Name>.name" . }}
   template:
     metadata:
       labels:
-        app: {{ include "<service-name>.name" . }}
+        app: {{ include "<.Chart.Name>.name" . }}
     spec:
       containers:
       - name: {{ .Chart.Name }}
