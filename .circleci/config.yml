@@ -20,7 +20,7 @@ jobs:
     - run: 
         name: docker gcloud init
         command: | 
-          gcloud auth configure-docker
+          gcloud auth configure-docker  us-central1-docker.pkg.dev
     - run:
         name: Build and Push Auth Service
         command: |
