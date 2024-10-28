@@ -36,6 +36,27 @@ jobs:
         command: |
           docker build -t us-central1-docker.pkg.dev/codetokloud/payment/payment:latest ./services/payment
           docker push us-central1-docker.pkg.dev/codetokloud/payment/payment:latest
+  deploy:
+    docker:
+      - image: google/cloud-sdk:latest  # Cloud SDK with Kubernetes and Helm installed
+    steps:
+      - checkout
+
+      # Authenticate with GKE
+      - run:
+          name: Authenticate with GKE
+          command: |
+            echo $GCLOUD_SERVICE_KEY > gcloud-service-key.json
+            gcloud auth activate-service-account --key-file=gcloud-service-key.json
+            gcloud config set project codetokloud
+            gcloud container clusters get-credentials cluster-1 --zone us-central1
+      # Install Helm
+      - run:
+          name: Install Helm
+          command: |
+            curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+
 
 
 workflows:
