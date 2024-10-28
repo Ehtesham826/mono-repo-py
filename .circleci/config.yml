@@ -17,6 +17,10 @@ jobs:
           echo $GCLOUD_SERVICE_KEY > gcloud-service-key.json
           gcloud auth activate-service-account --key-file=gcloud-service-key.json
           ls -l
+    - run: 
+        name: docker gcloud init
+        command: | 
+          gcloud auth configure-docker
     - run:
         name: Build and Push Auth Service
         command: |
