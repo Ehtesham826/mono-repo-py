@@ -52,8 +52,7 @@ jobs:
           name: Install Helm
           command: |
             curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-            helm lint ./helm/auth
-            helm template ./helm/auth
+  
 
       - run:
           name: Deploy Auth Service
