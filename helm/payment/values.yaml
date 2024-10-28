@@ -1,0 +1,46 @@
+
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/codetokloud/payment
+  pullPolicy: IfNotPresent
+
+  tag: "latest"
+
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+
+
+podAnnotations: {}
+
+podLabels: {}
+
+podSecurityContext: {}
+
+
+securityContext: {}
+
+
+service:
+  type: ClusterIP
+  port: 8000
+
+
+
+resources: {}
+
+
+
+volumes: []
+
+volumeMounts: []
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
