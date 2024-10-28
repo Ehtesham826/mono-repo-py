@@ -62,7 +62,7 @@ jobs:
       - run:
           name: Deploy Search Service
           command: |
-            helm upgrade --install search ./helm/search --set image.repository= us-central1-docker.pkg.dev/codetokloud/search/search:latest --set image.tag=latest
+            helm upgrade --install search ./helm/search --set image.repository=us-central1-docker.pkg.dev/codetokloud/search/search:latest --set image.tag=latest
 
       - run:
           name: Deploy Payment Service
