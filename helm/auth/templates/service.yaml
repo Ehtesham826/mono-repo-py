@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ include "auth.fullname" . }}
 spec:
-  type: {{ .Values.service.type | default "ClusterIP" }}
+  type: {{ .Values.service.type | default "ClusterIP" }} 
   selector:
     app: {{ include "auth.name" . }}
   ports:
