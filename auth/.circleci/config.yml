@@ -23,16 +23,6 @@ jobs:
         command: |
             docker build -t us-central1-docker.pkg.dev/codetokloud/auth/auth:latest ./services/auth
             docker push us-central1-docker.pkg.dev/codetokloud/auth/auth:latest
-    - run:
-        name: Build and Push Search Service
-        command: |
-          docker build -t us-central1-docker.pkg.dev/codetokloud/search/search:latest ./services/search
-          docker push us-central1-docker.pkg.dev/codetokloud/search/search:latest
-    - run:
-        name: Build and Push Payment Service
-        command: |
-          docker build -t us-central1-docker.pkg.dev/codetokloud/payment/payment:latest ./services/payment
-          docker push us-central1-docker.pkg.dev/codetokloud/payment/payment:latest
   deploy:
     docker:
       - image: google/cloud-sdk:latest  
@@ -55,18 +45,6 @@ jobs:
           name: Deploy Auth Service
           command: |
               helm upgrade --install auth ./helm/auth --set image.repository=us-central1-docker.pkg.dev/codetokloud/auth/auth:latest --set image.tag=latest
-
-      - run:
-          name: Deploy Search Service
-          command: |
-            helm upgrade --install search ./helm/search --set image.repository=us-central1-docker.pkg.dev/codetokloud/search/search:latest --set image.tag=latest
-
-      - run:
-          name: Deploy Payment Service
-          command: |
-            helm upgrade --install payment ./helm/payment --set image.repository=us-central1-docker.pkg.dev/codetokloud/payment/payment:latest --set image.tag=latest
-
-
 
 
 workflows:
