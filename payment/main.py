@@ -22,6 +22,6 @@ async def process_payment(user: str, amount: float):
     return {"message": f"Payment of ${amount} for {user} processed successfully."}
 
 
-@app.get("/search/health")
+@app.get("/health")
 def health_check():
     return {"status": "service running"}
