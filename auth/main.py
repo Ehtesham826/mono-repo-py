@@ -9,7 +9,7 @@ secrete = os.getenv("SEARCH_API_KEY")
 #healt check path
 @app.get("/health")
 def health_check():
-    return {"status": "service auth running"}
+    return {"status": "auth running"}
 
 @app.post("/auth/login")
 def login(username: str, password: str):
