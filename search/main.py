@@ -16,3 +16,8 @@ async def search(query: str):
         if auth_response.status_code != 200:
             raise HTTPException(status_code=500, detail="Auth service is down")
     return {"results": f"Search results for '{query}'"}
+
+
+@app.get("/search/health")
+def health_check():
+    return {"status": "service running"}
