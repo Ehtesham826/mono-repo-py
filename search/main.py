@@ -20,4 +20,4 @@ async def search(query: str):
 
 @app.get("/health")
 def health_check():
-    return {"status": "service running"}
+    return {"status": "service  search running"}
