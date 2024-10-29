@@ -1,31 +1,37 @@
-# version: 2.1
+version: 2.1
 
-# parameters:
-#   trigger-auth:
-#     type: boolean
-#     default: false
-#   trigger-payment:
-#     type: boolean
-#     default: false
-#   trigger-search:
-#     type: boolean
-#     default: false
+parameters:
+  run-auth-workflow:
+    type: boolean
+    default: false
+  run-payment-workflow:
+    type: boolean
+    default: false
+  run-search-workflow:
+    type: boolean
+    default: false
 
-# workflows:
-#   continue-auth-workflow:
-#     when: << pipeline.parameters.trigger-auth >>
-#     jobs:
-#       - continuation/continue:
-#           configuration_path: auth/.circleci/config.yml
+workflows:
+  auth-workflow:
+    when: << pipeline.parameters.run-auth-workflow >>
+    jobs:
+      - auth_build
+      - auth_deploy:
+          requires:
+            - auth_build
 
-#   continue-payment-workflow:
-#     when: << pipeline.parameters.trigger-payment >>
-#     jobs:
-#       - continuation/continue:
-#           configuration_path: payment/.circleci/config.yml
+  payment-workflow:
+    when: << pipeline.parameters.run-payment-workflow >>
+    jobs:
+      - payment_build
+      - payment_deploy:
+          requires:
+            - payment_build
 
-#   continue-search-workflow:
-#     when: << pipeline.parameters.trigger-search >>
-#     jobs:
-#       - continuation/continue:
-#           configuration_path: search/.circleci/config.yml
+  search-workflow:
+    when: << pipeline.parameters.run-search-workflow >>
+    jobs:
+      - search_build
+      - search_deploy:
+          requires:
+            - search_build
