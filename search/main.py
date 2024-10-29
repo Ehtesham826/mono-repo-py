@@ -18,6 +18,6 @@ async def search(query: str):
     return {"results": f"Search results for '{query}'"}
 
 
-@app.get("/search/health")
+@app.get("/health")
 def health_check():
     return {"status": "service running"}
