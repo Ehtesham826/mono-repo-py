@@ -5,11 +5,15 @@ orbs:
 
 setup: true
 
+parameters:
+  run-setup-workflow:
+    type: boolean
+    default: true
+
 workflows:
   trigger-services:
     jobs:
       - path-filtering/filter:
-          name: detect-changes
           base-revision: main
           config-path: .circleci/continue-config.yml
           mapping: |
