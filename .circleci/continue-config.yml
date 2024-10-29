@@ -15,17 +15,17 @@ workflows:
   auth-workflow:
     when: << pipeline.parameters.run-auth-workflow >>
     jobs:
-      - auth/auth_build
-      - auth/auth_deploy
+      - auth_build
+      - auth_deploy
 
   payment-workflow:
     when: << pipeline.parameters.run-payment-workflow >>
     jobs:
-      - payment/payment_build
-      - payment/payment_deploy
+      - payment_build
+      - payment_deploy
 
   search-workflow:
     when: << pipeline.parameters.run-search-workflow >>
     jobs:
-      - search/search_build
-      - search/search_deploy
+      - search_build
+      - search_deploy
