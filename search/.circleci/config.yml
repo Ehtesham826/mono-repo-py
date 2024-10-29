@@ -21,20 +21,26 @@ jobs:
           root: /tmp
           paths:
             - changes_detected.txt
+    hold_build:
+      type: approval
+      steps:
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Check if Build Should Be Held
+          command: |
+            if [ "$(cat /tmp/changes_detected.txt)" = "true" ]; then
+              echo "Changes detected. Skipping hold."
+              exit 0  # Skip hold and continue with build.
+            else
+              echo "No changes detected. Holding build."
+              exit 1  # Trigger hold in CircleCI.
+            fi
   search_build:
     docker:
     - image: google/cloud-sdk
     steps:
     - checkout
-    - attach_workspace:
-          at: /tmp
-    - run:
-          name: Check if Build is Needed
-          command: |
-            if [ "$(cat /tmp/changes_detected.txt)" != "true" ]; then
-              echo "Skipping build since no changes detected."
-              exit 0
-            fi
     - setup_remote_docker
 
     - run:
@@ -83,9 +89,12 @@ workflows:
   search_build_and_deploy:
     jobs:
     - detect_search_changes
+    - hold_build:
+       requires:
+         - detect_search_changes
     - search_build:
         requires:
-          - detect_search_changes
+          - hold_build
     - search_deploy:
         requires:
         - search_build
