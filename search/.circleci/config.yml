@@ -81,10 +81,10 @@ workflows:
   version: 2
   search_build_and_deploy:
     jobs:
-    - detect_auth_changes
+    - detect_search_changes
     - search_build:
         requires:
-          - detect_auth_changes
+          - detect_search_changes
     - search_deploy:
         requires:
         - search_build
