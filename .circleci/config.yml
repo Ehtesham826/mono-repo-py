@@ -9,28 +9,10 @@ workflows:
   trigger-services:
     jobs:
       - path-filtering/filter:
-          name: detect-auth-changes
+          name: detect-changes
           base-revision: main
           config-path: .circleci/continue-config.yml
           mapping: |
-            ^auth/.* true
-            ^payment/.* false
-            ^search/.* false
-
-      - path-filtering/filter:
-          name: detect-payment-changes
-          base-revision: main
-          config-path: .circleci/continue-config.yml
-          mapping: |
-            ^payment/.* true
-            ^auth/.* false
-            ^search/.* false
-
-      - path-filtering/filter:
-          name: detect-search-changes
-          base-revision: main
-          config-path: .circleci/continue-config.yml
-          mapping: |
-            ^search/.* true
-            ^auth/.* false
-            ^payment/.* false
+            auth/.* true
+            payment/.* true
+            search/.* true
