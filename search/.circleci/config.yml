@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   detect_search_changes:
     docker:
-      - image: python:3.9-slim  
+      - image: python:3.9-slim  # Lightweight Python image for detection
     steps:
       - checkout
       - run:
@@ -15,7 +15,6 @@ jobs:
             else
               echo "No changes in auth service."
               echo "false" > /tmp/changes_detected.txt
-              exit 1
             fi
       - persist_to_workspace:
           root: /tmp
