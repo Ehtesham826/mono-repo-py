@@ -5,18 +5,14 @@ orbs:
 
 setup: true
 
-parameters:
-  run-setup-workflow:
-    type: boolean
-    default: true
-
 workflows:
   trigger-services:
     jobs:
       - path-filtering/filter:
+          name: detect-changes
           base-revision: main
           config-path: .circleci/continue-config.yml
           mapping: |
-            auth/.* auth_changes true
-            payment/.* payment_changes true
-            search/.* search_changes true
+            auth/.* auth_build_and_deploy true
+            payment/.* payment_build_and_deploy true
+            search/.* search_build_and_deploy true

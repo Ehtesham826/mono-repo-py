@@ -4,19 +4,16 @@ workflows:
   service-deployments:
     jobs:
       - auth_build_and_deploy:
-          when: << pipeline.parameters.auth_changes >>
           filters:
             branches:
               only: main
 
       - payment_build_and_deploy:
-          when: << pipeline.parameters.payment_changes >>
           filters:
             branches:
               only: main
 
       - search_build_and_deploy:
-          when: << pipeline.parameters.search_changes >>
           filters:
             branches:
               only: main
