@@ -82,10 +82,10 @@ workflows:
   version: 2
   payment_build_and_deploy:
     jobs:
-    - detect_auth_changes
+    - detect_payment_changes
     - payment_build:
         requires:
-        - detect_auth_changes
+        - detect_payment_changes
     - payment_deploy:
         requires:
         - payment_build
