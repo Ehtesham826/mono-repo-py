@@ -6,6 +6,17 @@ orbs:
   path-filtering: circleci/path-filtering@0.0.2
   continuation: circleci/continuation@0.1.2
 
+parameters:
+  trigger-auth:
+    type: boolean
+    default: false
+  trigger-payment:
+    type: boolean
+    default: false
+  trigger-search:
+    type: boolean
+    default: false
+
 workflows:
   setup-workflow:
     jobs:
@@ -18,16 +29,16 @@ workflows:
             search/.* trigger-search true
 
       - continuation/continue:
-          name: continue-auth
+          name: load-auth-config
           configuration_path: auth/.circleci/config.yml
-          when: << pipeline.parameters.trigger-auth >>
+          when: << parameters.trigger-auth >>
 
       - continuation/continue:
-          name: continue-payment
+          name: load-payment-config
           configuration_path: payment/.circleci/config.yml
-          when: << pipeline.parameters.trigger-payment >>
+          when: << parameters.trigger-payment >>
 
       - continuation/continue:
-          name: continue-search
+          name: load-search-config
           configuration_path: search/.circleci/config.yml
-          when: << pipeline.parameters.trigger-search >>
+          when: << parameters.trigger-search >>
