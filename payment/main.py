@@ -20,3 +20,8 @@ async def process_payment(user: str, amount: float):
             raise HTTPException(status_code=500, detail="Dependencies not responding")
 
     return {"message": f"Payment of ${amount} for {user} processed successfully."}
+
+
+@app.get("/search/health")
+def health_check():
+    return {"status": "service running"}
