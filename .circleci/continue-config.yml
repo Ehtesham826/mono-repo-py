@@ -1,22 +1,28 @@
 version: 2.1
 
+parameters:
+  run-auth-workflow:
+    type: boolean
+    default: false
+  run-payment-workflow:
+    type: boolean
+    default: false
+  run-search-workflow:
+    type: boolean
+    default: false
+
 workflows:
-  service-deployments:
+  auth-workflow:
+    when: << pipeline.parameters.run-auth-workflow >>
     jobs:
-      - auth_build_and_deploy:
-          when: << pipeline.parameters.auth_build_and_deploy >>
-          filters:
-            branches:
-              only: main
+      - auth_build_and_deploy
 
-      - payment_build_and_deploy:
-          when: << pipeline.parameters.payment_build_and_deploy >>
-          filters:
-            branches:
-              only: main
+  payment-workflow:
+    when: << pipeline.parameters.run-payment-workflow >>
+    jobs:
+      - payment_build_and_deploy
 
-      - search_build_and_deploy:
-          when: << pipeline.parameters.search_build_and_deploy >>
-          filters:
-            branches:
-              only: main
+  search-workflow:
+    when: << pipeline.parameters.run-search-workflow >>
+    jobs:
+      - search_build_and_deploy

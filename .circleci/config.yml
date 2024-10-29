@@ -1,23 +1,19 @@
 version: 2.1
 
+setup: true
+
 orbs:
   path-filtering: circleci/path-filtering@0.0.2
 
-setup: true
 
-parameters:
-  run-setup-workflow:
-    type: boolean
-    default: true
-    
 workflows:
-  trigger-services:
+  setup-workflow:
     jobs:
       - path-filtering/filter:
           name: detect-changes
           base-revision: main
           config-path: .circleci/continue-config.yml
           mapping: |
-            auth/.* auth_build_and_deploy true
-            payment/.* payment_build_and_deploy true
-            search/.* search_build_and_deploy true
+            auth/.* run-auth-workflow true
+            payment/.* run-payment-workflow true
+            search/.* run-search-workflow true
