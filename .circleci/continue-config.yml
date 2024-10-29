@@ -4,14 +4,22 @@ workflows:
   service-deployments:
     jobs:
       - auth_build_and_deploy:
+          requires:
+            - detect-auth-changes
           filters:
             branches:
               only: main
+
       - payment_build_and_deploy:
+          requires:
+            - detect-payment-changes
           filters:
             branches:
               only: main
+
       - search_build_and_deploy:
+          requires:
+            - detect-search-changes
           filters:
             branches:
               only: main
