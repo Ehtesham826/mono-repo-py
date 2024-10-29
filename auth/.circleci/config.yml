@@ -3,39 +3,41 @@ version: 2.1
 jobs:
   detect_auth_changes:
     docker:
-      - image: python:3.9-slim 
+    - image: python:3.9-slim
     steps:
-      - checkout
-      - run:
-          name: Check for Changes in Auth Service
-          command: |
-            if git diff --name-only origin/main...HEAD | grep -q '^auth/'; then
-              echo "Changes detected in auth service."
-              echo "true" > /tmp/changes_detected.txt
-            else
-              echo "No changes in auth service."
-              echo "false" > /tmp/changes_detected.txt
-              exit 0
-            fi
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - changes_detected.txt
-    hold_build:
-      type: approval  
-      steps:
-        - attach_workspace:
-            at: /tmp
-        - run:
-            name: Check if Build Should Be Held
-            command: |
-              if [ "$(cat /tmp/changes_detected.txt)" = "true" ]; then
-                echo "Changes detected. Skipping hold."
-                exit 0  # Skip hold and continue with build.
-              else
-                echo "No changes detected. Holding build."
-                exit 1  # Trigger hold in CircleCI.
-              fi
+    - checkout
+    - run:
+        name: Check for Changes in Auth Service
+        command: |
+          if git diff --name-only origin/main...HEAD | grep -q '^auth/'; then
+            echo "Changes detected in auth service."
+            echo "true" > /tmp/changes_detected.txt
+          else
+            echo "No changes in auth service."
+            echo "false" > /tmp/changes_detected.txt
+            exit 0
+          fi
+    - persist_to_workspace:
+        root: /tmp
+        paths:
+        - changes_detected.txt
+  hold_build:
+    docker:
+    - image: python:3.9-slim
+    type: approval
+    steps:
+    - attach_workspace:
+        at: /tmp
+    - run:
+        name: Check if Build Should Be Held
+        command: |
+          if [ "$(cat /tmp/changes_detected.txt)" = "true" ]; then
+            echo "Changes detected. Skipping hold."
+            exit 0  # Skip hold and continue with build.
+          else
+            echo "No changes detected. Holding build."
+            exit 1  # Trigger hold in CircleCI.
+          fi
 
   auth_build:
     docker:
@@ -43,7 +45,7 @@ jobs:
     steps:
     - checkout
     - setup_remote_docker
-  
+
     - run:
         name: Setup Google Cloud SDK
         command: |
@@ -89,9 +91,9 @@ workflows:
   auth_build_and_deploy:
     jobs:
     - detect_auth_changes
-    - hold_build: 
-          requires:
-            - detect_auth_changes
+    - hold_build:
+        requires:
+        - detect_auth_changes
     - auth_build:
         requires:
         - hold_build
@@ -99,5 +101,5 @@ workflows:
         requires:
         - auth_build
         filters:
-            branches:
-              only: main
+          branches:
+            only: main

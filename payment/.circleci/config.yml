@@ -21,9 +21,11 @@ jobs:
         root: /tmp
         paths:
         - changes_detected.txt
-    hold_build:
-      type: approval
-      steps:
+  hold_build:
+    docker:
+        - image: python:3.9-slim 
+    type: approval
+    steps:
       - attach_workspace:
           at: /tmp
       - run:
