@@ -7,16 +7,16 @@ workflows:
           filters:
             branches:
               only: main
-          when: << pipeline.parameters.auth_changes >>
+          when: << pipeline.parameters.auth_build_and_deploy >>
 
       - payment_build_and_deploy:
           filters:
             branches:
               only: main
-          when: << pipeline.parameters.payment_changes >>
+          when: << pipeline.parameters.payment_build_and_deploy >>
 
       - search_build_and_deploy:
           filters:
             branches:
               only: main
-          when: << pipeline.parameters.search_changes >>
+          when: << pipeline.parameters.search_build_and_deploy >>
