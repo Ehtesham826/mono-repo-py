@@ -4,14 +4,27 @@ orbs:
   path-filtering: circleci/path-filtering@0.0.2
 
 setup: true
+
 workflows:
   trigger-services:
     jobs:
       - path-filtering/filter:
-          name: detect-changes
+          name: detect-auth-changes
           base-revision: main
           config-path: .circleci/continue-config.yml
           mapping: |
             auth/.* auth_build_and_deploy true
+
+      - path-filtering/filter:
+          name: detect-payment-changes
+          base-revision: main
+          config-path: .circleci/continue-config.yml
+          mapping: |
             payment/.* payment_build_and_deploy true
+
+      - path-filtering/filter:
+          name: detect-search-changes
+          base-revision: main
+          config-path: .circleci/continue-config.yml
+          mapping: |
             search/.* search_build_and_deploy true
