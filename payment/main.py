@@ -24,4 +24,4 @@ async def process_payment(user: str, amount: float):
 
 @app.get("/health")
 def health_check():
-    return {"status": "service running"}
+    return {"status": "service payment running"}
