@@ -65,6 +65,6 @@ workflows:
     - auth_deploy:
         requires:
         - auth_build
-      filters:
+        filters:
             branches:
               only: main
