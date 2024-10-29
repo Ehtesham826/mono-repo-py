@@ -14,6 +14,6 @@ workflows:
           base-revision: main
           config-path: .circleci/continue-config.yml
           mapping: |
-            auth/.* config-path:auth/.circleci/config.yml true
-            payment/.* config-path:payment/.circleci/config.yml true
-            search/.* config-path:search/.circleci/config.yml true
+            auth/.* run-auth-workflow true
+            payment/.* run-payment-workflow true
+            search/.* run-search-workflow true
