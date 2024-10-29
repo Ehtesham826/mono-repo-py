@@ -11,21 +11,29 @@ parameters:
     type: boolean
     default: false
 
+jobs:
+  backend-test:
+      docker:
+        - image: cimg/python:3.8
+      steps:
+        - checkout
+        - python/install-packages:
+            pkg-manager: pip
+        - run:
+            name: Run tests
+            command: pytest
+
 workflows:
   auth-workflow:
     when: << pipeline.parameters.run-auth-workflow >>
     jobs:
-      - auth_build
-      - auth_deploy
-
+      - backend-test
   payment-workflow:
     when: << pipeline.parameters.run-payment-workflow >>
     jobs:
-      - payment_build
-      - payment_deploy
+      - backend-test
 
   search-workflow:
     when: << pipeline.parameters.run-search-workflow >>
     jobs:
-      - search_build
-      - search_deploy
+      - backend-test
