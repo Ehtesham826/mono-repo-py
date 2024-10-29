@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   detect_search_changes:
     docker:
-      - image: python:3.9-slim  # Lightweight Python image for detection
+      - image: python:3.9-slim  
     steps:
       - checkout
       - run:
@@ -15,34 +15,26 @@ jobs:
             else
               echo "No changes in auth service."
               echo "false" > /tmp/changes_detected.txt
-              exit 0
+              exit 1
             fi
       - persist_to_workspace:
           root: /tmp
           paths:
             - changes_detected.txt
-  hold_build:
-    docker:
-        - image: python:3.9-slim 
-    type: approval
-    steps:
-      - attach_workspace:
-          at: /tmp
-      - run:
-          name: Check if Build Should Be Held
-          command: |
-            if [ "$(cat /tmp/changes_detected.txt)" = "true" ]; then
-              echo "Changes detected. Skipping hold."
-              exit 0  # Skip hold and continue with build.
-            else
-              echo "No changes detected. Holding build."
-              exit 1  # Trigger hold in CircleCI.
-            fi
   search_build:
     docker:
     - image: google/cloud-sdk
     steps:
     - checkout
+    - attach_workspace:
+          at: /tmp
+    - run:
+          name: Check if Build is Needed
+          command: |
+            if [ "$(cat /tmp/changes_detected.txt)" != "true" ]; then
+              echo "Skipping build since no changes detected."
+              exit 0
+            fi
     - setup_remote_docker
 
     - run:
@@ -91,12 +83,9 @@ workflows:
   search_build_and_deploy:
     jobs:
     - detect_search_changes
-    - hold_build:
-       requires:
-         - detect_search_changes
     - search_build:
         requires:
-          - hold_build
+          - detect_search_changes
     - search_deploy:
         requires:
         - search_build
