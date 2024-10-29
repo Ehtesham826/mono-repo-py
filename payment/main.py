@@ -9,7 +9,7 @@ AUTH_SERVICE_URL = os.getenv("AUTH_SERVICE_URL")
 SEARCH_SERVICE_URL = os.getenv("SEARCH_SERVICE_URL")
 
 app = FastAPI()
-
+#paymrent endpoint
 @app.post("/payment")
 async def process_payment(user: str, amount: float):
     async with httpx.AsyncClient() as client:
