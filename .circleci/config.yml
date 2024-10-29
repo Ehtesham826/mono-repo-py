@@ -12,7 +12,6 @@ workflows:
     jobs:
       - path-filtering/filter:
           base-revision: main
-          config-path: .circleci/continue-config.yml 
           mapping: |
             auth/.* auth true
             payment/.* payment true
