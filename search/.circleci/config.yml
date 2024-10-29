@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  search_build:
     docker:
     - image: google/cloud-sdk
     steps:
@@ -35,7 +35,7 @@ jobs:
           docker build -t us-central1-docker.pkg.dev/codetokloud/search/search:latest ./services/search
           docker push us-central1-docker.pkg.dev/codetokloud/search/search:latest
 
-  deploy:
+  search_deploy:
     docker:
     - image: google/cloud-sdk:latest
     steps:
@@ -62,7 +62,10 @@ workflows:
   version: 2
   search_build_and_deploy:
     jobs:
-    - build
-    - deploy:
+    - search_build
+    - search_deploy:
         requires:
-        - build
+        - search_build
+        filters:
+            branches:
+              only: main

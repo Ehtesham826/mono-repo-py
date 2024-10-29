@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  payment_build:
     docker:
     - image: google/cloud-sdk
     steps:
@@ -34,7 +34,7 @@ jobs:
         command: |
           docker build -t us-central1-docker.pkg.dev/codetokloud/payment/payment:latest ./services/payment
           docker push us-central1-docker.pkg.dev/codetokloud/payment/payment:latest
-  deploy:
+  payment_deploy:
     docker:
     - image: google/cloud-sdk:latest
     steps:
@@ -63,7 +63,10 @@ workflows:
   version: 2
   payment_build_and_deploy:
     jobs:
-    - build
-    - deploy:
+    - payment_build
+    - payment_deploy:
         requires:
-        - build
+        - payment_build
+        filters:
+            branches:
+              only: main
