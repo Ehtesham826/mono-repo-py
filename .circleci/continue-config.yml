@@ -13,10 +13,9 @@ parameters:
 
 workflows:
   auth-workflow:
-    run-auth-build-and-deploy:
     when: << pipeline.parameters.run-auth-workflow >>
     jobs:
-      - auth_build 
+      - auth_build
       - auth_deploy:
           requires:
             - auth_build
