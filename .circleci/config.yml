@@ -13,6 +13,6 @@ workflows:
           base-revision: main
           config-path: .circleci/continue-config.yml
           mapping: |
-            auth/.* auth_build_and_deploy true
-            payment/.* payment_build_and_deploy true
-            search/.* search_build_and_deploy true
+            auth/.* auth_changes true
+            payment/.* payment_changes true
+            search/.* search_changes true
