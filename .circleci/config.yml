@@ -6,7 +6,8 @@ orbs:
   path-filtering: circleci/path-filtering@0.0.2
   continuation: circleci/continuation@0.1.2
 
-
+cache:
+  directories: []
 
 workflows:
   setup-workflow:
