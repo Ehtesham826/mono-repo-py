@@ -5,6 +5,11 @@ orbs:
 
 setup: true
 
+parameters:
+  run-setup-workflow:
+    type: boolean
+    default: true
+    
 workflows:
   trigger-services:
     jobs:
