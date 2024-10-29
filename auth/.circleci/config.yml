@@ -54,10 +54,7 @@ workflows:
   version: 2
   auth_build_and_deploy:
     jobs:
-    - auth_build
-    - auth_deploy:
-        requires:
-        - auth_build
-        filters:
-          branches:
-            only: main
+      - auth_build
+      - auth_deploy:
+          requires:
+            - auth_build
