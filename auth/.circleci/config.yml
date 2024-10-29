@@ -1,22 +1,41 @@
 version: 2.1
 
 jobs:
+  detect_auth_changes:
+    docker:
+      - image: python:3.9-slim 
+    steps:
+      - checkout
+      - run:
+          name: Check for Changes in Auth Service
+          command: |
+            if git diff --name-only origin/main...HEAD | grep -q '^auth/'; then
+              echo "Changes detected in auth service."
+              echo "true" > /tmp/changes_detected.txt
+            else
+              echo "No changes in auth service."
+              echo "false" > /tmp/changes_detected.txt
+            fi
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - changes_detected.txt
   auth_build:
     docker:
     - image: google/cloud-sdk
     steps:
     - checkout
-    - setup_remote_docker
-    
+    - attach_workspace:
+          at: /tmp
     - run:
-          name: Check for Changes in Auth Service
+          name: Check if Build is Needed
           command: |
-            if git diff --name-only HEAD~1 | grep -q '^auth/'; then
-              echo "Changes detected in auth service"
-            else
-              echo "No changes in auth service, skipping..."
+            if [ "$(cat /tmp/changes_detected.txt)" != "true" ]; then
+              echo "Skipping build since no changes detected."
               exit 0
             fi
+    - setup_remote_docker
+  
     - run:
         name: Setup Google Cloud SDK
         command: |
@@ -61,7 +80,10 @@ workflows:
   version: 2
   auth_build_and_deploy:
     jobs:
-    - auth_build
+    - detect_auth_changes
+    - auth_build:
+        requires:
+        - detect_auth_changes
     - auth_deploy:
         requires:
         - auth_build
