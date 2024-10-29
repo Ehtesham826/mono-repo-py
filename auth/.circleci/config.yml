@@ -14,44 +14,44 @@ jobs:
           echo $GCLOUD_SERVICE_KEY > gcloud-service-key.json
           gcloud auth activate-service-account --key-file=gcloud-service-key.json
           ls -l
-    - run: 
+    - run:
         name: docker gcloud init
-        command: | 
+        command: |
           gcloud auth configure-docker  us-central1-docker.pkg.dev
     - run:
         name: Build and Push Auth Service
         command: |
-            docker build -t us-central1-docker.pkg.dev/codetokloud/auth/auth:latest ./services/auth
-            docker push us-central1-docker.pkg.dev/codetokloud/auth/auth:latest
+          docker build -t us-central1-docker.pkg.dev/codetokloud/auth/auth:latest ./services/auth
+          docker push us-central1-docker.pkg.dev/codetokloud/auth/auth:latest
   deploy:
     docker:
-      - image: google/cloud-sdk:latest  
+    - image: google/cloud-sdk:latest
     steps:
-      - checkout
-      - run:
-          name: Authenticate with GKE
-          command: |
-            echo $GCLOUD_SERVICE_KEY > gcloud-service-key.json
-            gcloud auth activate-service-account --key-file=gcloud-service-key.json
-            gcloud config set project codetokloud
-            gcloud container clusters get-credentials cluster-1 --zone us-central1
-      - run:
-          name: Install Helm
-          command: |
-            curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
-  
+    - checkout
+    - run:
+        name: Authenticate with GKE
+        command: |
+          echo $GCLOUD_SERVICE_KEY > gcloud-service-key.json
+          gcloud auth activate-service-account --key-file=gcloud-service-key.json
+          gcloud config set project codetokloud
+          gcloud container clusters get-credentials cluster-1 --zone us-central1
+    - run:
+        name: Install Helm
+        command: |
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-      - run:
-          name: Deploy Auth Service
-          command: |
-              helm upgrade --install auth ./helm/auth --set image.repository=us-central1-docker.pkg.dev/codetokloud/auth/auth:latest --set image.tag=latest
+
+    - run:
+        name: Deploy Auth Service
+        command: |
+          helm upgrade --install auth ./helm/auth --set image.repository=us-central1-docker.pkg.dev/codetokloud/auth/auth:latest --set image.tag=latest
 
 
 workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - build
-      - deploy:
-          requires:
-            - build
+    - build
+    - deploy:
+        requires:
+        - build
