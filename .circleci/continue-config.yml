@@ -16,23 +16,23 @@ workflows:
     run-auth-build-and-deploy:
     when: << pipeline.parameters.run-auth-workflow >>
     jobs:
-      - auth/.circleci/config.yml/auth_build
-      - auth/.circleci/config.yml/auth_deploy:
+      - auth_build 
+      - auth_deploy:
           requires:
-            - auth/.circleci/config.yml/auth_build
+            - auth_build
 
   payment-workflow:
     when: << pipeline.parameters.run-payment-workflow >>
     jobs:
-      - payment/.circleci/config.yml/payment_build
-      - payment/.circleci/config.yml/payment_deploy:
+      - payment_build
+      - payment_deploy:
           requires:
-            - payment/.circleci/config.yml/payment_build
+            - payment_build
 
   search-workflow:
     when: << pipeline.parameters.run-search-workflow >>
     jobs:
-      - search/.circleci/config.yml/search_build
-      - search/.circleci/config.yml/search_deploy:
+      - search_build
+      - search_deploy:
           requires:
-            - search/.circleci/config.yml/search_build
+            - search_build
