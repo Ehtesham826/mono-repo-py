@@ -3,18 +3,15 @@ version: 2.1
 workflows:
   service-deployments:
     jobs:
-      - auth:
+      - auth-deploy:
           filters:
-            paths:
-              only:
-                - "auth/**/*"
-      - payment:
+            branches:
+              only: main
+      - payment-deploy:
           filters:
-            paths:
-              only:
-                - "payment/**/*"
-      - search:
+            branches:
+              only: main
+      - search-deploy:
           filters:
-            paths:
-              only:
-                - "search/**/*"
+            branches:
+              only: main
