@@ -1,9 +1,16 @@
+version: 2.1
+
+orbs:
+  path-filtering: circleci/path-filtering@0.0.2 
+
 workflows:
+  version: 2  # 
+
   setup-workflow:
     jobs:
       - path-filtering/filter:
           base-revision: main
-          config-path: .circleci/continue-config.yml
+          config-path: .circleci/continue-config.yml 
           mapping: |
             auth/.* auth true
             payment/.* payment true
