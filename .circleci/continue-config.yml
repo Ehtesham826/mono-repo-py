@@ -1,0 +1,20 @@
+version: 2.1
+
+workflows:
+  service-deployments:
+    jobs:
+      - auth:
+          filters:
+            paths:
+              only:
+                - "auth/**/*"
+      - payment:
+          filters:
+            paths:
+              only:
+                - "payment/**/*"
+      - search:
+          filters:
+            paths:
+              only:
+                - "search/**/*"
