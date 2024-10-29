@@ -15,7 +15,7 @@ workflows:
       - path-filtering/filter:
           name: detect-changes
           base-revision: main
-          config-path: .circleci/continue-config.yml
+          config-path: ".circleci/dynamic_config.yml"
           mapping: |
             auth/.* run-auth-workflow true
             payment/.* run-payment-workflow true
