@@ -1,40 +1,12 @@
 version: 2.1
 
 jobs:
-  detect_payment_changes:
-    docker:
-      - image: python:3.9-slim 
-    steps:
-      - checkout
-      - run:
-          name: Check for Changes in Auth Service
-          command: |
-            if git diff --name-only origin/main...HEAD | grep -q '^payment/'; then
-              echo "Changes detected in auth service."
-              echo "true" > /tmp/changes_detected.txt
-            else
-              echo "No changes in auth service."
-              echo "false" > /tmp/changes_detected.txt
-              exit 1
-            fi
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - changes_detected.txt
+  
   payment_build:
     docker:
     - image: google/cloud-sdk
     steps:
     - checkout
-    - attach_workspace:
-          at: /tmp
-    - run:
-          name: Check if Build is Needed
-          command: |
-            if [ "$(cat /tmp/changes_detected.txt)" != "true" ]; then
-              echo "Skipping build since no changes detected."
-              exit 0
-            fi
     - setup_remote_docker
 
     - run:
@@ -83,10 +55,7 @@ workflows:
   version: 2
   payment_build_and_deploy:
     jobs:
-    - detect_payment_changes
-    - payment_build:
-        requires:
-        - detect_payment_changes
+    - payment_build
     - payment_deploy:
         requires:
         - payment_build

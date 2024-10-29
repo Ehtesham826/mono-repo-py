@@ -13,18 +13,18 @@ workflows:
         base-revision: main
         config-path: auth/.circleci/config.yml
         mapping: |
-          auth/.*  true
+          auth/.* auth_build_and_deploy true
         
     - path-filtering/filter:
         name: detect-payment-changes
         base-revision: main
         config-path: payment/.circleci/config.yml
         mapping: |
-          payment/.*  true
+          payment/.* payment_build_and_deploy true
 
     - path-filtering/filter:
         name: detect-search-changes
         base-revision: main
         config-path: search/.circleci/config.yml
         mapping: |
-          search/.*  true
+          search/.* search_build_and_deploy true
