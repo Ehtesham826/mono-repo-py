@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  detect_auth_changes:
+  detect_search_changes:
     docker:
       - image: python:3.9-slim  # Lightweight Python image for detection
     steps:
