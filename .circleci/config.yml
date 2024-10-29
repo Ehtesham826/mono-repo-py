@@ -19,17 +19,4 @@ workflows:
             auth/.* run-auth-workflow true
             payment/.* run-payment-workflow true
             search/.* run-search-workflow true
-      - continuation/continue:
-          name: continue-auth
-          configuration_path: auth/.circleci/config.yml
-          when: << pipeline.parameters.run-auth-workflow >>
-
-      - continuation/continue:
-          name: continue-payment
-          configuration_path: payment/.circleci/config.yml
-          when: << pipeline.parameters.run-payment-workflow >>
-
-      - continuation/continue:
-          name: continue-search
-          configuration_path: search/.circleci/config.yml
-          when: << pipeline.parameters.run-search-workflow >>
+      

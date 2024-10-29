@@ -12,19 +12,19 @@ parameters:
     default: false
 
 workflows:
-  continue-auth:
+  auth-workflow:
     when: << pipeline.parameters.run-auth-workflow >>
     jobs:
       - continuation/continue:
           configuration_path: auth/.circleci/config.yml
 
-  continue-payment:
+  payment-workflow:
     when: << pipeline.parameters.run-payment-workflow >>
     jobs:
       - continuation/continue:
           configuration_path: payment/.circleci/config.yml
 
-  continue-search:
+  search-workflow:
     when: << pipeline.parameters.run-search-workflow >>
     jobs:
       - continuation/continue:
