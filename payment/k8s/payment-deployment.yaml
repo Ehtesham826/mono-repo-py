@@ -21,4 +21,4 @@ spec:
         - name: AUTH_SERVICE_URL
           value: "http://auth-service:8000"
         - name: SEARCH_SERVICE_URL
-          value: "http://search-service:8001"
+          value: "http://search-service:8000"
