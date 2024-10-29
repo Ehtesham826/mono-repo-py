@@ -6,7 +6,7 @@ app = FastAPI()
 load_dotenv()
 
 secrete = os.getenv("SEARCH_API_KEY")
-
+#healt check path
 @app.get("/health")
 def health_check():
     return {"status": "service auth running"}
