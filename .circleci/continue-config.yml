@@ -11,6 +11,52 @@ parameters:
     type: boolean
     default: false
 
+jobs:
+  auth_build:
+    working_directory: ~/auth
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: echo "Building auth service..."
+
+  auth_deploy:
+    working_directory: ~/auth
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo "Deploying auth service..."
+
+  payment_build:
+    working_directory: ~/payment
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: echo "Building payment service..."
+
+  payment_deploy:
+    working_directory: ~/payment
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo "Deploying payment service..."
+
+  search_build:
+    working_directory: ~/search
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: echo "Building search service..."
+
+  search_deploy:
+    working_directory: ~/search
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo "Deploying search service..."
+
 workflows:
   auth-workflow:
     when: << pipeline.parameters.run-auth-workflow >>
