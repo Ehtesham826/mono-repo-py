@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   detect_search_changes:
     docker:
-      - image: python:3.9-slim  # Lightweight Python image for detection
+      - image: python:3.9-slim 
     steps:
       - checkout
       - run:
@@ -32,7 +32,7 @@ jobs:
           command: |
             if [ "$(cat /tmp/changes_detected.txt)" != "true" ]; then
               echo "Skipping build since no changes detected."
-              exit 0
+              exit 1
             fi
     - setup_remote_docker
 
